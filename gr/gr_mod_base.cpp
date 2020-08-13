@@ -153,6 +153,11 @@ void gr_mod_base::set_mode(int mode)
         _top_block->disconnect(_2fsk_10k,0,_rotator,0);
         _top_block->disconnect(_rotator,0,_osmosdr_sink,0);
         break;
+    case gr_modem_types::ModemType2FSK10KFMINET:
+        _top_block->disconnect(_byte_source,0,_2fsk_10k,0);
+        _top_block->disconnect(_2fsk_10k,0,_rotator,0);
+        _top_block->disconnect(_rotator,0,_osmosdr_sink,0);
+        break;
     case gr_modem_types::ModemType4FSK2K:
         _top_block->disconnect(_byte_source,0,_4fsk_2k,0);
         _top_block->disconnect(_4fsk_2k,0,_rotator,0);
@@ -315,6 +320,15 @@ void gr_mod_base::set_mode(int mode)
         _top_block->connect(_rotator,0,_osmosdr_sink,0);
         break;
     case gr_modem_types::ModemType2FSK10KFM:
+        _carrier_offset = 50000;
+        _rotator->set_phase_inc(2*M_PI*_carrier_offset/1000000);
+        _osmosdr_sink->set_center_freq(_device_frequency - _carrier_offset);
+        _osmosdr_sink->set_sample_rate(1000000);
+        _top_block->connect(_byte_source,0,_2fsk_10k,0);
+        _top_block->connect(_2fsk_10k,0,_rotator,0);
+        _top_block->connect(_rotator,0,_osmosdr_sink,0);
+        break;
+    case gr_modem_types::ModemType2FSK10KFMINET:
         _carrier_offset = 50000;
         _rotator->set_phase_inc(2*M_PI*_carrier_offset/1000000);
         _osmosdr_sink->set_center_freq(_device_frequency - _carrier_offset);

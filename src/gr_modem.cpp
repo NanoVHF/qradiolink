@@ -131,6 +131,10 @@ void gr_modem::toggleTxMode(int modem_type)
         {
             _tx_frame_length = 47;
         }
+        else if(modem_type == gr_modem_types::ModemType2FSK10KFMINET)
+        {
+            _tx_frame_length = 47;
+        }
         else if(modem_type == gr_modem_types::ModemType4FSK2K)
         {
             _tx_frame_length = 7;
@@ -209,6 +213,11 @@ void gr_modem::toggleRxMode(int modem_type)
             _rx_frame_length = 47;
         }
         else if (modem_type == gr_modem_types::ModemType2FSK10KFM)
+        {
+            _bit_buf_len = 48 *8;
+            _rx_frame_length = 47;
+        }
+        else if (modem_type == gr_modem_types::ModemType2FSK10KFMINET)
         {
             _bit_buf_len = 48 *8;
             _rx_frame_length = 47;
@@ -801,6 +810,7 @@ bool gr_modem::demodulate()
             || (_modem_type_rx == gr_modem_types::ModemType2FSK2KFM)
             || (_modem_type_rx == gr_modem_types::ModemType2FSK2K)
             || (_modem_type_rx == gr_modem_types::ModemType2FSK10KFM)
+            || (_modem_type_rx == gr_modem_types::ModemType2FSK10KFMINET)
             || (_modem_type_rx == gr_modem_types::ModemTypeBPSK1K)
             || (_modem_type_rx == gr_modem_types::ModemType2FSK1KFM)
             || (_modem_type_rx == gr_modem_types::ModemType2FSK1K))
@@ -821,6 +831,7 @@ bool gr_modem::demodulate()
     if((_modem_type_rx == gr_modem_types::ModemTypeBPSK2K)
             || (_modem_type_rx == gr_modem_types::ModemTypeBPSK1K)
             || (_modem_type_rx == gr_modem_types::ModemType2FSK10KFM)
+            || (_modem_type_rx == gr_modem_types::ModemType2FSK10KFMINET)
             || (_modem_type_rx == gr_modem_types::ModemType2FSK2KFM)
             || (_modem_type_rx == gr_modem_types::ModemType2FSK2K)
             || (_modem_type_rx == gr_modem_types::ModemType2FSK1KFM)
@@ -849,6 +860,7 @@ bool gr_modem::demodulate()
     if((_modem_type_rx == gr_modem_types::ModemTypeBPSK2K)
             || (_modem_type_rx == gr_modem_types::ModemTypeBPSK1K)
             || (_modem_type_rx == gr_modem_types::ModemType2FSK10KFM)
+            || (_modem_type_rx == gr_modem_types::ModemType2FSK10KFMINET)
             || (_modem_type_rx == gr_modem_types::ModemType2FSK2KFM)
             || (_modem_type_rx == gr_modem_types::ModemType2FSK2K)
             || (_modem_type_rx == gr_modem_types::ModemType2FSK1KFM)
@@ -938,6 +950,7 @@ int gr_modem::findSync(unsigned char bit)
     }
     if(_modem_type_rx != gr_modem_types::ModemTypeQPSK250K &&
             _modem_type_rx != gr_modem_types::ModemTypeQPSKVideo &&
+            _modem_type_rx != gr_modem_types::ModemType2FSK10KFMINET &&
             _modem_type_rx != gr_modem_types::ModemType4FSK100K)
     {
         temp = _shift_reg & 0xFFFF;

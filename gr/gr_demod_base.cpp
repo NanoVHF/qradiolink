@@ -242,6 +242,14 @@ void gr_demod_base::set_mode(int mode, bool disconnect, bool connect)
             _top_block->disconnect(_2fsk_10k,2,_deframer1_10k,0);
             _top_block->disconnect(_2fsk_10k,3,_deframer2_10k,0);
             break;
+        case gr_modem_types::ModemType2FSK10KFMINET:
+            _top_block->disconnect(_demod_valve,0,_2fsk_10k,0);
+            _top_block->disconnect(_2fsk_10k,0,_rssi_valve,0);
+            _top_block->disconnect(_2fsk_10k,1,_const_valve,0);
+            _top_block->disconnect(_const_valve,0,_constellation,0);
+            _top_block->disconnect(_2fsk_10k,2,_deframer1_10k,0);
+            _top_block->disconnect(_2fsk_10k,3,_deframer2_10k,0);
+            break;
         case gr_modem_types::ModemType4FSK2K:
             _top_block->disconnect(_demod_valve,0,_4fsk_2k,0);
             _top_block->disconnect(_4fsk_2k,0,_rssi_valve,0);
@@ -431,6 +439,14 @@ void gr_demod_base::set_mode(int mode, bool disconnect, bool connect)
             _top_block->connect(_2fsk_1k,3,_deframer_700_2,0);
             break;
         case gr_modem_types::ModemType2FSK10KFM:
+            _top_block->connect(_demod_valve,0,_2fsk_10k,0);
+            _top_block->connect(_2fsk_10k,0,_rssi_valve,0);
+            _top_block->connect(_2fsk_10k,1,_const_valve,0);
+            _top_block->connect(_const_valve,0,_constellation,0);
+            _top_block->connect(_2fsk_10k,2,_deframer1_10k,0);
+            _top_block->connect(_2fsk_10k,3,_deframer2_10k,0);
+            break;
+        case gr_modem_types::ModemType2FSK10KFMINET:
             _top_block->connect(_demod_valve,0,_2fsk_10k,0);
             _top_block->connect(_2fsk_10k,0,_rssi_valve,0);
             _top_block->connect(_2fsk_10k,1,_const_valve,0);
@@ -640,6 +656,9 @@ std::vector<unsigned char>* gr_demod_base::getData(int nr)
         case gr_modem_types::ModemType2FSK10KFM:
             data = _deframer1_10k->get_data();
             break;
+        case gr_modem_types::ModemType2FSK10KFMINET:
+            data = _deframer1_10k->get_data();
+            break;
         case gr_modem_types::ModemTypeBPSK1K:
             data = _deframer_700_1->get_data();
             break;
@@ -665,6 +684,9 @@ std::vector<unsigned char>* gr_demod_base::getData(int nr)
             data = _deframer_700_2->get_data();
             break;
         case gr_modem_types::ModemType2FSK10KFM:
+            data = _deframer2_10k->get_data();
+            break;
+        case gr_modem_types::ModemType2FSK10KFMINET:
             data = _deframer2_10k->get_data();
             break;
         case gr_modem_types::ModemTypeBPSK1K:
